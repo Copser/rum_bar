@@ -1,5 +1,8 @@
 defmodule RumBar.Schema do
   use Absinthe.Schema
+  import_types RumBar.Schema.ContentTypes
+  import_types RumBar.Schema.InputTypes
+  import_types RumBar.Schema.Mutations
 
   query do
     field :me, :user do
@@ -9,7 +12,7 @@ defmodule RumBar.Schema do
     end
   end
 
-  def mutations do
+  mutation do
     import_fields :mutations
   end
 
