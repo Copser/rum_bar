@@ -13,6 +13,14 @@ defmodule RumBarWeb.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/api" do
+    pipe_through :api
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: RumBarWeb.Schema
+
+  end
+
   scope "/", RumBarWeb do
     pipe_through :browser
 

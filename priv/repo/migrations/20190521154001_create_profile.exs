@@ -10,5 +10,6 @@ defmodule RumBar.Repo.Migrations.CreateProfile do
       timestamps()
     end
 
+    create unique_index(:profile, [:email])
   end
 end
