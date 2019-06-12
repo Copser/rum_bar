@@ -12,4 +12,10 @@ defmodule RumBar.Schema.ContentTypes do
     field :email, :string
     field :name, :string
   end
+
+  object :viewer do
+    field :id, :id
+    field :email, :string
+    field :name, :string
+  end
 end

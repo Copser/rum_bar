@@ -5,9 +5,9 @@ defmodule RumBar.Schema do
   import_types RumBar.Schema.Mutations
 
   query do
-    field :me, :user do
-      resolve fn (_, _, %{context: %{user: user}}) ->
-        {:ok, user}
+    field :me, :viewer do
+      resolve fn (_, _, %{context: %{viewer: viewer}}) ->
+        {:ok, viewer}
       end
     end
   end
@@ -23,11 +23,11 @@ defmodule RumBar.Schema do
       Dataloader.new
       |> Dataloader.add_source(:db, source)
 
-    user = ctx[:user] || RumBar.Repo.get!(RumBar.Account.User, 1)
+    viewer = ctx[:viewer] || RumBar.Repo.get!(RumBar.Account.User, 1)
 
     ctx
     |> Map.put(:loader, loader)
-    |> Map.put(:user, user)
+    |> Map.put(:viewer, viewer)
   end
 
   def plugins do

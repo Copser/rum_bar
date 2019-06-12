@@ -1,4 +1,4 @@
-defmodule RumBar.Auth do
+defmodule RumBar.Account.Auth do
   import Ecto.Query
   alias RumBar.Repo
   alias RumBar.Account.User
