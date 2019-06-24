@@ -2,7 +2,7 @@ defmodule RumBar.Account.User do
   use Ecto.Schema
   import Ecto.Changeset
 
-  schema "profile" do
+  schema "users" do
     field :email, :string
     field :name, :string
     field :password_hash, :string
