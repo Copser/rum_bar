@@ -1,8 +1,8 @@
-defmodule RumBar.Repo.Migrations.CreateProfile do
+defmodule RumBar.Repo.Migrations.CreateUsers do
   use Ecto.Migration
 
   def change do
-    create table(:profile) do
+    create table(:users) do
       add :name, :string
       add :email, :string
       add :password_hash, :string
@@ -10,6 +10,6 @@ defmodule RumBar.Repo.Migrations.CreateProfile do
       timestamps()
     end
 
-    create unique_index(:profile, [:email])
+    create unique_index(:users, [:email])
   end
 end

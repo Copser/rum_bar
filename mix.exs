@@ -46,8 +46,10 @@ defmodule RumBar.MixProject do
       {:bcrypt_elixir, "~> 2.0"},
       {:absinthe, "~> 1.4.0"},
       {:absinthe_plug, "~> 1.4.0"},
+
       {:joken, "~> 2.0"},
       {:dataloader, "~> 1.0.0"},
+      {:ecto_enum, "~> 1.2"}
     ]
   end
 

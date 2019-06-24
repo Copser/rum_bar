@@ -2,8 +2,6 @@ use Mix.Config
 
 # Configure your database
 config :rum_bar, RumBar.Repo,
-  username: "postgres",
-  password: "postgres",
   database: "rum_bar_dev",
   hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
