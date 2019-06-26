@@ -23,7 +23,7 @@ defmodule RumBar.Schema do
       Dataloader.new
       |> Dataloader.add_source(:db, source)
 
-    viewer = ctx[:viewer] || RumBar.Repo.get!(RumBar.Account.User, 1)
+    viewer = ctx[:viewer] || RumBar.Repo.get!(RumBar.Profile.Schema.User, 1)
 
     ctx
     |> Map.put(:loader, loader)

@@ -1,4 +1,4 @@
-defmodule RumBar.Account.User do
+defmodule RumBar.Profile.Schema.User do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -30,7 +30,7 @@ defmodule RumBar.Account.User do
     |> validate_required([:password])
   end
 
-  def has_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
+  defp hash_password(%Ecto.Changeset{valid?: true, changes: %{password: password}} = changeset) do
     changeset
     |> put_change(:password_hash, Bcrypt.hash_pwd_salt(password))
   end

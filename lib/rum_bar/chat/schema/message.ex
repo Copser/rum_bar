@@ -1,10 +1,10 @@
-defmodule RumBar.Chat.Message do
+defmodule RumBar.Chat.Schema.Message do
   use Ecto.Schema
   import Ecto.Changeset
   import EctoEnum
 
-  alias RumBar.Account.User
-  alias RumBar.Chat.Thread
+  alias RumBar.Profile.Schema.User
+  alias RumBar.Chat.Schema.Thread
 
   defenum Type, text: 0, image_url: 1
 
