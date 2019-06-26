@@ -1,4 +1,4 @@
-defmodule RumBarWeb.AuthPlug do
+defmodule RumBar.AuthPlug do
   @behaviour Plug
   import Plug.Conn
 
@@ -10,7 +10,7 @@ defmodule RumBarWeb.AuthPlug do
   end
 
   def authorize(conn, ["Bearer " <> token]) do
-    case RumBar.Account.Auth.get_user_for_token(token) do
+    case RumBar.Auth.get_user_for_token(token) do
       {:ok, user} ->
         conn
         |> put_private(:absinthe, %{context: %{user: user}})

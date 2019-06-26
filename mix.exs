@@ -49,7 +49,10 @@ defmodule RumBar.MixProject do
 
       {:joken, "~> 2.0"},
       {:dataloader, "~> 1.0.0"},
-      {:ecto_enum, "~> 1.2"}
+      {:faker, "~> 0.12"},
+      {:gen_smtp, "~> 0.12"},
+      {:ecto_enum, "~> 1.2"},
+      {:scrivener_ecto, "~> 2.0"}
     ]
   end
 

@@ -1,7 +1,7 @@
-defmodule RumBar.Chat.Thread do
+defmodule RumBar.Chat.Schema.Thread do
   use Ecto.Schema
 
-  alias RumBar.Account.User
+  alias RumBar.Profile.Schema.User
 
   schema "threads" do
     belongs_to :primo, User

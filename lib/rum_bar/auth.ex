@@ -1,14 +1,15 @@
-defmodule RumBar.Account.Auth do
+defmodule RumBar.Auth do
   import Ecto.Query
+
   alias RumBar.Repo
-  alias RumBar.Account.User
   alias RumBar.Token
+  alias RumBar.Profile.Schema.User
 
   def login(email, password) do
     user =
-     User
-     |> where([t], t.email == ^email)
-     |> Repo.one
+      User
+      |> where([t], t.email == ^email)
+      |> Repo.one
 
     has_valid_password = Bcrypt.verify_pass(password, (if user, do: user.password_hash, else: ""))
 
