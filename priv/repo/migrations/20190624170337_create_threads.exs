@@ -6,6 +6,7 @@ defmodule RumBar.Repo.Migrations.CreateThreads do
       add :primo_id, references(:users, on_delete: :delete_all)
       add :secundo_id, references(:users, on_delete: :delete_all)
 
+      add :headline, :string, default: nil
       timestamps()
     end
 

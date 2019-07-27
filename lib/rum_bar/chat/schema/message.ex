@@ -24,4 +24,21 @@ defmodule RumBar.Chat.Schema.Message do
     |> cast(attrs, [:content, :type])
     |> validate_required([:content, :type])
   end
+
+  def put_cursor(changeset) do
+    if get_field(changeset, :cursor) != nil do
+      changeset
+    else
+      changeset
+      |> put_change(:cursor, generate_cursor())
+    end
+  end
+
+  def generate_cursor do
+    com_a = :os.system_time(:nanosecond)
+    com_b = Enum.random(10000..99999)
+
+    (:binary.encode_unsigned(com_a) <> :binary.encode_unsigned(com_b))
+    |> Base.encode16
+  end
 end
