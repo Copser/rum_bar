@@ -1,8 +1,12 @@
 defmodule RumBar.Schema do
   use Absinthe.Schema
-  import_types RumBar.Schema.ContentTypes
-  import_types RumBar.Schema.InputTypes
-  import_types RumBar.Schema.Mutations
+
+  import Absinthe.Type.Custom
+  import_types RumBarWeb.Schema.ProfileType
+  import_types RumBarWeb.Schema.ChatType
+  import_types RumBarWeb.Schema.ViewerType
+
+  alias RumBar.Profile
 
   query do
     field :me, :viewer do
@@ -10,10 +14,20 @@ defmodule RumBar.Schema do
         {:ok, viewer}
       end
     end
+
+    field :user, :user do
+      arg :id, :id, default_value: "me"
+
+      resolve fn _, %{id: id}, %{context: %{viewer: viewer}} ->
+        id = if id == "me" do viewer.id else id end
+
+        Profile.get(id)
+    end
   end
 
   mutation do
-    import_fields :mutations
+    import_fields :profile_mutations
+    import_fields :chat_mutations
   end
 
   def context(ctx) do
@@ -38,5 +52,6 @@ defmodule RumBar.Schema do
     middleware ++ [RumBar.Schema.ErrorMiddleware]
   end
 
-  def middleware(middleware, _field, _object), do: middleware
+  def middleware(middleware, _field, _object), do: middleware end
+
 end

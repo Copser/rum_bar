@@ -10,6 +10,9 @@ use Mix.Config
 config :rum_bar,
   ecto_repos: [RumBar.Repo]
 
+config :rum_bar, RumBar.Repo,
+  migration_primary_key: [name: :id, type: :binary_id]
+
 # Configures the endpoint
 config :rum_bar, RumBarWeb.Endpoint,
   url: [host: "localhost"],

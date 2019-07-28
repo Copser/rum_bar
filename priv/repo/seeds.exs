@@ -12,7 +12,7 @@
 alias RumBar.Repo
 alias RumBar.Profile.Schema.User
 
-users = Enum.map(0..50, fn _ ->
+users = Enum.map(0..100, fn _ ->
   %User{}
   |> User.changeset(%{
       name: Faker.Name.name,
@@ -23,13 +23,24 @@ users = Enum.map(0..50, fn _ ->
 end)
 
 # First user
-first = List.first(users)
+first =
+  List.first(users)
+  |> User.changeset(%{email: "example1@example.com"})
+  |> Ecto.Changeset.put_change(:id, "11111111-1111-1111-1111-111111111111")
+  |> Repo.update!
+  |> IO.inspect
 
-IO.inspect(first)
-
+users =
+  users
+  |> List.replace_at(0, first)
 
 # Send Messages
-Enum.map(0..100, fn _ ->
-  [a_id, b_id | _] = Enum.shuffle([1, 23, 24, 25])
+user_ids =
+  users
+  |> Enum.take(4)
+  |> Enum.map(&(&1.id))
+
+Enum.map(0..1000, fn _ ->
+  [a_id, b_id | _] = Enum.shuffle(user_ids)
   RumBar.Chat.Actions.Message.send_message(%{id: a_id}, %{receiver_id: b_id, content: Faker.Lorem.sentence(1..10), type: 0})
 end)

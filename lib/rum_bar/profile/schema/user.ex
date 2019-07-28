@@ -1,5 +1,5 @@
 defmodule RumBar.Profile.Schema.User do
-  use Ecto.Schema
+  use RumBar.Schema
   import Ecto.Changeset
 
   schema "users" do
