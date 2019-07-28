@@ -1,5 +1,5 @@
 defmodule RumBar.Chat.Schema.Message do
-  use Ecto.Schema
+  use RumBar.Schema
   import Ecto.Changeset
   import EctoEnum
 
@@ -10,6 +10,7 @@ defmodule RumBar.Chat.Schema.Message do
 
   schema "messages" do
     field :content, :string
+    field :cursor, :string
     field :type, Type
 
     belongs_to :sender, User
@@ -23,6 +24,7 @@ defmodule RumBar.Chat.Schema.Message do
     message
     |> cast(attrs, [:content, :type])
     |> validate_required([:content, :type])
+    |> put_cursor
   end
 
   def put_cursor(changeset) do
