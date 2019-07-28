@@ -7,28 +7,41 @@ defmodule RumBar.Chat.Actions.Message do
   alias RumBar.Chat.Schema.Thread
   alias RumBar.Chat.Schema.Message
 
+  alias Ecto.Multi
   ## ACTION ##
 
-  def parse_int(val) when is_integer(val), do: val
-  def parse_int(val) do
-    {val, _} = Integer.parse(val)
-    val
-  end
+  # removing int
+  # def parse_int(val) when is_integer(val), do: val
+  # def parse_int(val) do
+  #   {val, _} = Integer.parse(val)
+  #   val
+  # end
 
   def send_message(viewer, %{content: content, type: type, receiver_id: id}) do
-    id = parse_int(id)
     thread = find_or_create_thread(viewer, id)
     type = type || "text"
 
-    %Message{}
-    |> Message.chageset(%{content: content, type: type})
-    |> put_change(:receiver, id)
-    |> put_change(:thread, thread.id)
-    |> Repo.insert
+    message_changeset =
+      %Message{}
+      |> Message.chageset(%{content: content, type: type})
+      |> put_change(:receiver_id, id)
+      |> put_change(:sender_id, viewer.id)
+      |> put_change(:thread_id, thread.id)
+
+    thread_changeset =
+      thread
+      |> Thread.changeset(%{headline: content})
+
+    {:ok, %{message: message}} =
+      Multi.new
+      |> Multi.insert(:message, message_changeset)
+      |> Multi.update(:thread, thread_changeset)
+      |> Repo.transaction
+
+    {:ok, Repo.preload(message, [:sender, :receiver])}
   end
 
   def find_or_create_thread(viewer, id) do
-    id = parse_int(id)
     thread =
       Thread
       |> where([t], (t.primo_id == ^viewer.id and t.secundo_id == ^id) or (t.secundo_id == ^viewer.id and t.primo_id == ^id))
@@ -44,14 +57,18 @@ defmodule RumBar.Chat.Actions.Message do
 
   ## QUERY ##
 
-  def list_messages(viewer, %{thread_id: thread_id, page: page, page_size: page_size}) do
-    messages_page =
+  def list_messages(_viewer, %{thread_id: thread_id} = params) do
+    query =
       Message
       |> where([t], t.thread_id == ^thread_id)
-      |> order_by(desc: :id)
-      |> Repo.paginate(page: page, page_size: page_size)
+      |> order_by(desc: :cursor)
+      |> preload([:sender, :receiver])
+      |> limit(10)
 
-    {:ok, messages_page}
+    query =
+      if !params[:after], do: query, else: where(query, [t], t.cursor < ^params.after)
+
+      {:ok, Repo.all(query)}
   end
 
   def list_threads(viewer, %{page: page, page_size: page_size}) do
@@ -59,6 +76,7 @@ defmodule RumBar.Chat.Actions.Message do
       Thread
       |> where([t], t.primo_id == ^viewer.id or t.secundo_id == ^viewer.id)
       |> order_by(desc: :updated_at)
+      |> preload([:primo, :secundo])
       |> Repo.paginate(page: page, page_size: page_size)
 
     {:ok, threads}

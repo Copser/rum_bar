@@ -28,6 +28,9 @@ config :rum_bar, RumBarWeb.Endpoint,
     ]
   ]
 
+# FAST USER GENERATION
+config :bcrypt_elixir, :log_rounds, 4
+
 # ## SSL Support
 #
 # In order to use HTTPS in development, a self-signed

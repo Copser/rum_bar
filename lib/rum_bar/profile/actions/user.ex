@@ -5,9 +5,7 @@ defmodule RumBar.Profile.Action.User do
   alias RumBar.Profile.Schema.User
 
 
-  def get!(id) do
-    Repo.get!(User, id)
-  end
+  def get!(id), do: Repo.get!(User, id)
 
   def register_user(user_params) do
     %User{}
