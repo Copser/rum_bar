@@ -1,4 +1,4 @@
-defmodule RumBar.Schema do
+defmodule RumBarWeb.Schema do
   use Absinthe.Schema
 
   import Absinthe.Type.Custom
@@ -22,6 +22,7 @@ defmodule RumBar.Schema do
         id = if id == "me" do viewer.id else id end
 
         Profile.get(id)
+      end
     end
   end
 
@@ -31,13 +32,13 @@ defmodule RumBar.Schema do
   end
 
   def context(ctx) do
-    source = Dataloader.Ecto.new(RumBar.Repo)
+    source = Dataloader.Ecto.new(Waka.Repo)
 
     loader =
       Dataloader.new
       |> Dataloader.add_source(:db, source)
 
-    viewer = ctx[:viewer] || RumBar.Repo.get!(RumBar.Profile.Schema.User, 1)
+    viewer = ctx[:viewer]
 
     ctx
     |> Map.put(:loader, loader)
@@ -48,10 +49,9 @@ defmodule RumBar.Schema do
     [Absinthe.Middleware.Dataloader] ++ Absinthe.Plugin.defaults()
   end
 
-  def middleware(middleware, _field, %{indetifier: :mutation}) do
-    middleware ++ [RumBar.Schema.ErrorMiddleware]
+  def middleware(middleware, _field, %{identifier: :mutation}) do
+    middleware ++ [WekiWeb.ErrorMiddleware]
   end
 
-  def middleware(middleware, _field, _object), do: middleware end
-
+  def middleware(middleware, _field, _object), do: middleware
 end
