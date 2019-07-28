@@ -1,5 +1,5 @@
 defmodule RumBar.Chat.Schema.Thread do
-  use Ecto.Schema
+  use RumBar.Schema
   import Ecto.Changeset
 
   alias RumBar.Profile.Schema.User
