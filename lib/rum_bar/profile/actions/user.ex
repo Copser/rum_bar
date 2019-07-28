@@ -7,6 +7,14 @@ defmodule RumBar.Profile.Action.User do
 
   def get!(id), do: Repo.get!(User, id)
 
+  def get(id) do
+    user =
+    User
+    |> Repo.get(id)
+
+    {:ok, user}
+  end
+
   def register_user(user_params) do
     %User{}
     |> User.create_changeset(user_params)
