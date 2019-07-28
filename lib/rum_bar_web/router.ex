@@ -17,7 +17,7 @@ defmodule RumBarWeb.Router do
     pipe_through :api
 
     forward "/graphiql", Absinthe.Plug.GraphiQL,
-      schema: RumBar.Schema
+      schema: RumBarWeb.Schema
 
   end
 
