@@ -50,7 +50,7 @@ defmodule RumBarWeb.Schema do
   end
 
   def middleware(middleware, _field, %{identifier: :mutation}) do
-    middleware ++ [WekiWeb.ErrorMiddleware]
+    middleware ++ [RumBar.ErrorMiddleware]
   end
 
   def middleware(middleware, _field, _object), do: middleware
